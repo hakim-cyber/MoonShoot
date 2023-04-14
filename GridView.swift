@@ -18,6 +18,7 @@ struct GridView:View{
         ScrollView{
             LazyVGrid(columns:columns){
                 ForEach(missions) { mission in
+                    GeometryReader{ geo in
                     NavigationLink{
                         MissionView(mission: mission, astronouts: astronouts)
                     }label: {
@@ -45,10 +46,16 @@ struct GridView:View{
                             RoundedRectangle(cornerRadius: 15)
                                 .stroke(.lightBackground)
                         )
+                        
                     }
+                    .rotation3DEffect(.degrees(geo.frame(in:.global).minY - 30) / 20 , axis: (x: 1, y: 0, z: 0)
+                    )
+                  
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel("\(mission.displayName)")
                     .accessibilityHint("Launch Date \(mission.formattedLaunchDate)")
+                }
+                    .frame(width: 180, height:220)
                 }
                
                 
@@ -62,5 +69,6 @@ struct GridView_Previews: PreviewProvider {
     static var previews: some View {
         GridView()
             .preferredColorScheme(.dark)
+            .background(.darkBackground)
     }
 }

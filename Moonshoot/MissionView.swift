@@ -61,40 +61,51 @@ struct MissionView: View {
                     
                     ScrollView(.horizontal,showsIndicators: false){
                         HStack{
+                          
                             ForEach(crew,id: \.role) { crewMember in
-                                NavigationLink{
-                                    AstronautView(astronaut: crewMember.astronout)
-                                }label: {
-                                    HStack{
-                                        Image(crewMember.astronout.id)
-                                            .resizable()
-                                            .frame(width: 104,height: 72)
-                                            .clipShape(Capsule())
-                                            .overlay{
-                                                Capsule()
-                                                    .strokeBorder(.darkBackground,lineWidth: 1)
+                                GeometryReader{ geo in
+                                    NavigationLink{
+                                        AstronautView(astronaut: crewMember.astronout)
+                                    }label: {
+                                        HStack{
+                                            Image(crewMember.astronout.id)
+                                                .resizable()
+                                                .frame(width: 104,height: 72)
+                                                .clipShape(Capsule())
+                                                .overlay{
+                                                    Capsule()
+                                                        .strokeBorder(.darkBackground,lineWidth: 1)
+                                                }
+                                            VStack(alignment: .leading){
+                                                Text(crewMember.astronout.name)
+                                                    .foregroundColor(.white)
+                                                    .font(.headline)
+                                                
+                                                Text(crewMember.role)
+                                                    .foregroundColor(.secondary)
                                             }
-                                        VStack(alignment: .leading){
-                                            Text(crewMember.astronout.name)
-                                                .foregroundColor(.white)
-                                                .font(.headline)
-                                            
-                                            Text(crewMember.role)
-                                                .foregroundColor(.secondary)
                                         }
+                                        .background(.secondary)
+                                        .clipShape(RoundedRectangle(cornerRadius: 20))
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 20)
+                                                .stroke(.darkBackground)
+                                        )
+                                        .padding(.horizontal)
                                     }
-                                    .background(.secondary)
-                                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 20)
-                                            .stroke(.darkBackground)
-                                    )
-                                    .padding(.horizontal)
+                                    .rotation3DEffect(.degrees(geo.frame(in:.global).minX + 20) / 10 , axis: (x: 0, y: 1, z: 0))
+                                
+                                    .accessibilityElement(children:.ignore)
+                                    .accessibilityLabel("\(crewMember.role) \(crewMember.astronout.name)")
+                                    
                                 }
-                                .accessibilityElement(children:.ignore)
-                                .accessibilityLabel("\(crewMember.role) \(crewMember.astronout.name)")
+                              .frame(width: 380, height: 100)
+                                
                             }
+                        
+                            
                         }
+              
                        
                     }
                         }
